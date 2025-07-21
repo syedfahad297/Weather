@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Weather UI</title>
+	<link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+	<div class="weather-card">
+		<div class="inputBox">
+			<input type="text" id="cityName" placeholder="Write your city" />
+			<div class="spinner-border p-2 text-danger d-none" role="status" id="spinner">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+			<button id="btn" class="d-flex">Check Weather </button>
+		</div>
+		<div class="weather-top">
+			<div class="day-time">
+				<p>Thursday</p>
+				<span>02:42 pm</span>
+			</div>
+			<div class="main-weather">
+				<h1 id="temp_c">0°C</h1>
+				<p class="condition_text">-</p>
+			</div>
+			<div class="weather-icon">
+				<img class="weatherIcon" src="https://cdn.weatherapi.com/weather/64x64/day/116.png" />
+			</div>
+		</div>
+
+		<div class="weather-details">
+			<div class="detail-box">
+				<p>Wind</p>
+				<span class="windSpeed">0 k/hp</span>
+			</div>
+			<div class="detail-box">
+				<p>Temperature</p>
+				<span>16°C</span>
+			</div>
+			<div class="detail-box">
+				<p>Humidity</p>
+				<span id="realFeel">0%</span>
+			</div>
+		</div>
+	</div>
+	<script src="./assets/js/bootstrap.bundle.min.js"></script>
+	<script>
+		let cityNameInput = document.getElementById("cityName");
+		let btn = document.getElementById("btn");
+		let temp_c = document.getElementById("temp_c");
+		let realFeel = document.getElementById("realFeel");
+		let windSpeed = document.querySelector(".windSpeed");
+		let humidity = document.querySelector(".humidity");
+		let weatherIcon = document.querySelector(".weatherIcon");
+		let spinner = document.getElementById("spinner");
+
+		btn.addEventListener("click", function () {
+			 createElement();
+			
+		});
+		inputTxt.addEventListener("keyup", function (event) {
+            if (event.key == "Enter") {
+                createElement();
+            }
+        });
+			
+        function createElement() {
+			let cityName = cityNameInput.value;
+
+			fetch(`http://api.weatherapi.com/v1/current.json?key=7b8f2704e4e246cabe050602252605&q=${cityName}&aqi=no`)
+				.then(function (res) {
+					return res.json();
+
+				}).then(function (data) {
+					console.log(data);
+
+
+					temp_c.innerText = data.current.temp_c + "°C";
+					realFeel.innerText = data.current.feelslike_c;
+
+					windSpeed.innerText = data.current.wind_kph + " km/h";
+
+
+					humidity.innerText = data.current.humidity + "%";
+
+					weatherIcon.src = data.current.condition.icon;
+					document.querySelector(".condition_text").innerText = data.current.condition.text;
+
+
+				}).catch(function () {
+					alert("City not found");
+
+				}).finally(function () {
+					alert("always run")
+					spinner.classList.remove("d-none");
+				})
+
+
+		};
+
+	</script>
+</body>
+
+</html>
