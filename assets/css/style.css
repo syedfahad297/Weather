@@ -85,7 +85,7 @@ body {
   margin-bottom: 10px;
 }
 .inputBox button {
-  background-color: gold;
+  background-color: rgba(195, 243, 5, 0.838);
   padding: 8px 14px;
   width: 140px;
   border: 0;
